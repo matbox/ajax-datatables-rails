@@ -9,6 +9,7 @@ module AjaxDatatablesRails
     def initialize(view, options = {})
       @view = view
       @options = options
+      load_db_adapter
       load_paginator
     end
 
@@ -196,6 +197,14 @@ module AjaxDatatablesRails
         @sortable_displayed_columns << column[:data] if column[:orderable] == 'true'
       end
       @sortable_displayed_columns
+    end
+
+    def load_db_adapter
+      case config.db_adapter
+        when :mongoid
+          extend Extensions::Mongoid
+      end
+      self
     end
 
     def load_paginator
